@@ -192,11 +192,9 @@ export function PreviewPanel({ markdownText }: PreviewPanelProps) {
 						{markdownText}
 					</ReactMarkdown>
 				) : (
-					<div className="flex items-center justify-center min-h-full">
-						<p className="text-gray-400 dark:text-gray-500 text-sm">
-							プレビューがここに表示されます
-						</p>
-					</div>
+					<p className="text-gray-400 dark:text-gray-500 text-sm">
+						プレビューがここに表示されます
+					</p>
 				)}
 			</div>
 		</div>
