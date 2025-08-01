@@ -38,7 +38,9 @@ export function PreviewPanel({ markdownText }: PreviewPanelProps) {
 								return (
 									<ul
 										className={`mb-4 space-y-1 ${
-											isTaskList ? "list-none" : "list-disc list-outside ml-6"
+											isTaskList
+												? "list-disc list-outside ml-6"
+												: "list-disc list-outside ml-6"
 										}`}
 									>
 										{children}
@@ -54,7 +56,7 @@ export function PreviewPanel({ markdownText }: PreviewPanelProps) {
 								const isTaskItem = className?.includes("task-list-item");
 								if (isTaskItem) {
 									return (
-										<li className="text-foreground flex items-start gap-2">
+										<li className="text-foreground flex items-start gap-2 list-none">
 											{children}
 										</li>
 									);
