@@ -1,4 +1,5 @@
 import ReactMarkdown from "react-markdown";
+import remarkBreaks from "remark-breaks";
 import remarkGfm from "remark-gfm";
 
 interface PreviewPanelProps {
@@ -11,7 +12,7 @@ export function PreviewPanel({ markdownText }: PreviewPanelProps) {
 			<div className="max-w-none text-left p-4">
 				{markdownText ? (
 					<ReactMarkdown
-						remarkPlugins={[remarkGfm]}
+						remarkPlugins={[remarkGfm, remarkBreaks]}
 						components={{
 							h1: ({ children }) => (
 								<h1 className="text-3xl font-bold mb-4 text-foreground">
@@ -33,6 +34,7 @@ export function PreviewPanel({ markdownText }: PreviewPanelProps) {
 									{children}
 								</p>
 							),
+							br: () => <br />,
 							ul: ({ children, className }) => {
 								const isTaskList = className?.includes("contains-task-list");
 								return (
@@ -61,7 +63,12 @@ export function PreviewPanel({ markdownText }: PreviewPanelProps) {
 										</li>
 									);
 								}
-								return <li className="text-foreground">{children}</li>;
+								// リスト項目内の段落のマージンを調整
+								return (
+									<li className="text-foreground [&>p]:mb-0 [&>p]:leading-normal">
+										{children}
+									</li>
+								);
 							},
 							input: ({ type, checked, disabled }) => {
 								if (type === "checkbox") {
