@@ -1,69 +1,91 @@
-# React + TypeScript + Vite
+> [!note]
+> 本アプリケーションは、Kiroを使用して開発されたデモアプリケーションです。社内向けKiro紹介記事のために作成されました。
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+# マークダウンプレビューアプリ
 
-Currently, two official plugins are available:
+<img width="3428" height="2324" alt="CleanShot 2025-08-01 at 22 39 19@2x" src="https://github.com/user-attachments/assets/2a58a02e-cd8d-4bff-b1bd-cc73cc6251ad" />
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 概要
 
-## Expanding the ESLint configuration
+リアルタイムでマークダウンをプレビューできるWebアプリケーションです。左側のエディタに入力したマークダウンテキストが、右側のプレビューエリアに即座に反映されます。
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+### 主な機能
 
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+- **リアルタイムプレビュー**: 入力と同時にマークダウンがHTMLに変換されて表示
+- **コードブロック表示**: コードブロックのスタイリング対応
+- **画像プレビュー**: 画像URLを入力すると即座にプレビュー表示
+- **GitHub Flavored Markdown**: テーブル、タスクリストなどのGFM機能に対応
 
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
+## 技術スタック
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+- **フレームワーク**: React 19 + TypeScript 5.8
+- **ビルドツール**: Vite 7
+- **スタイリング**: Tailwind CSS 4 (@tailwindcss/vite)
+- **マークダウンパーサー**: react-markdown + remark-gfm + remark-breaks
+- **フォーマッター/リンター**: Biome
+- **Git hooks**: lefthook
+- **パッケージマネージャー**: Bun
+
+## セットアップ
+
+### 必要な環境
+
+- Node.js 18以上
+- Bun（推奨）またはnpm/yarn
+
+### インストール手順
+
+```bash
+# リポジトリのクローン
+git clone <repository-url>
+cd my-markdown-previewr
+
+# 依存関係のインストール
+bun install
+
+# 開発サーバーの起動
+bun dev
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+開発サーバーが起動したら、ブラウザで `http://localhost:5173` にアクセスしてください。
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+### ビルド
 
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+本番環境向けのビルドを作成する場合：
+
+```bash
+bun run build
 ```
+
+ビルドされたファイルは `dist/` ディレクトリに出力されます。
+
+## 使い方
+
+1. 左側のエディタエリアにマークダウンテキストを入力
+2. 右側のプレビューエリアにリアルタイムで変換結果が表示されます
+3. 以下の記法がサポートされています：
+   - 見出し（# ## ### など）
+   - リスト（箇条書き・番号付き）
+   - コードブロック（```で囲む）
+   - インラインコード（`で囲む）
+   - リンク・画像
+   - 太字・斜体
+   - 引用
+   - テーブル
+
+## プロジェクト構成
+
+```
+my-markdown-previewr/
+├── src/
+│   ├── components/
+│   │   ├── MarkdownEditor.tsx  # メインコンポーネント
+│   │   ├── InputPanel.tsx      # 入力エリア
+│   │   └── PreviewPanel.tsx    # プレビューエリア
+│   ├── lib/
+│   │   └── utils.ts            # ユーティリティ関数
+│   └── main.tsx                # エントリーポイント
+├── public/                     # 静的ファイル
+└── package.json               # プロジェクト設定
+```
+
