@@ -1,11 +1,9 @@
 import { useState } from "react";
-import { useDebounce } from "../hooks/useDebounce";
 import { InputPanel } from "./InputPanel";
 import { PreviewPanel } from "./PreviewPanel";
 
 export function MarkdownEditor() {
 	const [markdownText, setMarkdownText] = useState<string>("");
-	const debouncedMarkdownText = useDebounce(markdownText, 300);
 
 	const handleTextChange = (value: string) => {
 		setMarkdownText(value);
@@ -17,7 +15,7 @@ export function MarkdownEditor() {
 			<InputPanel value={markdownText} onChange={handleTextChange} />
 
 			{/* Preview Panel - 右側 */}
-			<PreviewPanel markdownText={debouncedMarkdownText} />
+			<PreviewPanel markdownText={markdownText} />
 		</div>
 	);
 }
