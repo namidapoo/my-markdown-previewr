@@ -1,4 +1,5 @@
-import type { KeyboardEvent } from "react";
+import type { DragEvent, KeyboardEvent } from "react";
+import { useState } from "react";
 
 interface InputPanelProps {
 	value: string;
@@ -6,6 +7,71 @@ interface InputPanelProps {
 }
 
 export function InputPanel({ value, onChange }: InputPanelProps) {
+	const [isDragOver, setIsDragOver] = useState(false);
+
+	const insertTextAtCursor = (textarea: HTMLTextAreaElement, text: string) => {
+		const start = textarea.selectionStart;
+		const end = textarea.selectionEnd;
+		const newValue = `${value.substring(0, start)}${text}${value.substring(end)}`;
+		onChange(newValue);
+
+		// カーソル位置を調整
+		setTimeout(() => {
+			const newCursorPos = start + text.length;
+			textarea.setSelectionRange(newCursorPos, newCursorPos);
+		}, 0);
+	};
+
+	const handleDragOver = (e: DragEvent<HTMLDivElement>) => {
+		e.preventDefault();
+		setIsDragOver(true);
+	};
+
+	const handleDragLeave = (e: DragEvent<HTMLDivElement>) => {
+		e.preventDefault();
+		setIsDragOver(false);
+	};
+
+	const handleDrop = (e: DragEvent<HTMLDivElement>) => {
+		e.preventDefault();
+		setIsDragOver(false);
+
+		const files = Array.from(e.dataTransfer.files);
+		const imageFiles = files.filter((file) => file.type.startsWith("image/"));
+
+		if (imageFiles.length === 0) {
+			return;
+		}
+
+		const textarea = e.currentTarget.querySelector("textarea");
+		if (!textarea) return;
+
+		imageFiles.forEach((file, index) => {
+			// PNG ファイルのみ処理
+			if (!file.type.includes("png")) {
+				console.log("PNG以外のファイルはスキップ:", file.type);
+				return;
+			}
+
+			// Blob URLを使用（Base64より軽量で短い）
+			const imageUrl = URL.createObjectURL(file);
+			const fileName = file.name.replace(/\.[^/.]+$/, ""); // 拡張子を除去
+			const markdown = `![${fileName}](${imageUrl})`;
+
+			console.log("生成されたBlob URL:", imageUrl);
+			console.log("マークダウン:", markdown);
+
+			if (index === 0) {
+				// 最初の画像はカーソル位置に挿入
+				insertTextAtCursor(textarea, markdown);
+			} else {
+				// 複数の画像は末尾に追加
+				const currentValue = textarea.value;
+				onChange(`${currentValue}\n${markdown}`);
+			}
+		});
+	};
+
 	const handleKeyDown = (e: KeyboardEvent<HTMLTextAreaElement>) => {
 		if (e.key === "Tab") {
 			e.preventDefault();
@@ -93,7 +159,16 @@ export function InputPanel({ value, onChange }: InputPanelProps) {
 	};
 
 	return (
-		<div className="input-panel border-r border-gray-300 dark:border-gray-700 h-full">
+		<div
+			className={`input-panel border-r border-gray-300 dark:border-gray-700 h-full relative ${
+				isDragOver ? "bg-blue-50 dark:bg-blue-900/20 border-blue-400" : ""
+			}`}
+			onDragOver={handleDragOver}
+			onDragLeave={handleDragLeave}
+			onDrop={handleDrop}
+			role="application"
+			aria-label="マークダウン入力エリア - 画像をドラッグ&ドロップできます"
+		>
 			<textarea
 				value={value}
 				onChange={(e) => onChange(e.target.value)}
@@ -102,6 +177,13 @@ export function InputPanel({ value, onChange }: InputPanelProps) {
 				className="markdown-textarea w-full h-full p-4 font-mono text-sm resize-none border-none outline-none bg-transparent focus:ring-0"
 				spellCheck={false}
 			/>
+			{isDragOver && (
+				<div className="absolute inset-0 flex items-center justify-center bg-blue-50/80 dark:bg-blue-900/40 border-2 border-dashed border-blue-400 pointer-events-none">
+					<div className="text-blue-600 dark:text-blue-300 text-lg font-medium">
+						画像をドロップしてください
+					</div>
+				</div>
+			)}
 		</div>
 	);
 }
