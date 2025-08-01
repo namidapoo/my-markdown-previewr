@@ -6,8 +6,6 @@ interface PreviewPanelProps {
 }
 
 export function PreviewPanel({ markdownText }: PreviewPanelProps) {
-	console.log("PreviewPanelに渡されたマークダウン:", markdownText);
-
 	// Blob URLを含む画像を抽出
 	const extractBlobUrls = (text: string) => {
 		const imageRegex = /!\[([^\]]*)\]\((blob:[^)]+)\)/g;
@@ -18,7 +16,6 @@ export function PreviewPanel({ markdownText }: PreviewPanelProps) {
 		for (const matchResult of matches) {
 			const [_fullMatch, alt, blobUrl] = matchResult;
 			blobUrls.set(alt, blobUrl);
-			console.log("抽出されたBlob URL:", alt, blobUrl);
 		}
 
 		return blobUrls;
@@ -133,26 +130,18 @@ export function PreviewPanel({ markdownText }: PreviewPanelProps) {
 
 								// 抽出したBlob URLから正しいsrcを取得
 								const actualSrc = blobUrls.get(alt || "") || src;
-								console.log("画像表示:", alt, "->", actualSrc);
 
 								// src が空文字列の場合は何も表示しない
 								if (!actualSrc || actualSrc.trim() === "") {
-									console.log("画像のsrcが空です");
 									return null;
 								}
-
-								console.log("画像を表示しようとしています:", actualSrc);
 
 								return (
 									<img
 										src={actualSrc}
 										alt={alt || ""}
 										className="max-w-full h-auto mb-4 rounded border"
-										onLoad={() => {
-											console.log("画像の読み込み成功:", actualSrc);
-										}}
 										onError={(e) => {
-											console.log("画像の読み込みエラー:", actualSrc);
 											// 画像読み込みエラー時の処理
 											const target = e.target as HTMLImageElement;
 											target.style.display = "none";

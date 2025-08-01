@@ -49,7 +49,6 @@ export function InputPanel({ value, onChange }: InputPanelProps) {
 		imageFiles.forEach((file, index) => {
 			// PNG ファイルのみ処理
 			if (!file.type.includes("png")) {
-				console.log("PNG以外のファイルはスキップ:", file.type);
 				return;
 			}
 
@@ -57,9 +56,6 @@ export function InputPanel({ value, onChange }: InputPanelProps) {
 			const imageUrl = URL.createObjectURL(file);
 			const fileName = file.name.replace(/\.[^/.]+$/, ""); // 拡張子を除去
 			const markdown = `![${fileName}](${imageUrl})`;
-
-			console.log("生成されたBlob URL:", imageUrl);
-			console.log("マークダウン:", markdown);
 
 			if (index === 0) {
 				// 最初の画像はカーソル位置に挿入
