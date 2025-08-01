@@ -24,29 +24,29 @@ export function PreviewPanel({ markdownText }: PreviewPanelProps) {
 	const blobUrls = extractBlobUrls(markdownText);
 
 	return (
-		<div className="preview-panel overflow-auto h-full bg-background">
-			<div className="max-w-none text-left p-4">
+		<div className="h-full bg-white dark:bg-gray-900 overflow-auto">
+			<div className="max-w-none text-left p-6 min-h-full">
 				{markdownText ? (
 					<ReactMarkdown
 						remarkPlugins={[remarkGfm]}
 						components={{
 							h1: ({ children }) => (
-								<h1 className="text-3xl font-bold mb-4 text-foreground">
+								<h1 className="text-3xl font-bold mb-4 text-gray-900 dark:text-white">
 									{children}
 								</h1>
 							),
 							h2: ({ children }) => (
-								<h2 className="text-2xl font-semibold mb-3 text-foreground">
+								<h2 className="text-2xl font-semibold mb-3 text-gray-900 dark:text-white">
 									{children}
 								</h2>
 							),
 							h3: ({ children }) => (
-								<h3 className="text-xl font-medium mb-2 text-foreground">
+								<h3 className="text-xl font-medium mb-2 text-gray-900 dark:text-white">
 									{children}
 								</h3>
 							),
 							p: ({ children }) => (
-								<p className="mb-4 text-foreground leading-relaxed">
+								<p className="mb-4 text-gray-700 dark:text-gray-300 leading-relaxed">
 									{children}
 								</p>
 							),
@@ -188,8 +188,10 @@ export function PreviewPanel({ markdownText }: PreviewPanelProps) {
 						{markdownText}
 					</ReactMarkdown>
 				) : (
-					<div className="text-muted-foreground italic text-left text-sm">
-						プレビューがここに表示されます
+					<div className="flex items-center justify-center min-h-full">
+						<p className="text-gray-400 dark:text-gray-500 text-sm">
+							プレビューがここに表示されます
+						</p>
 					</div>
 				)}
 			</div>

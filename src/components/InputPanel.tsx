@@ -156,8 +156,8 @@ export function InputPanel({ value, onChange }: InputPanelProps) {
 
 	return (
 		<div
-			className={`input-panel border-r border-gray-300 dark:border-gray-700 h-full relative ${
-				isDragOver ? "bg-blue-50 dark:bg-blue-900/20 border-blue-400" : ""
+			className={`h-full border-r border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-800 relative ${
+				isDragOver ? "bg-blue-50 dark:bg-blue-900/20" : ""
 			}`}
 			onDragOver={handleDragOver}
 			onDragLeave={handleDragLeave}
@@ -169,14 +169,31 @@ export function InputPanel({ value, onChange }: InputPanelProps) {
 				value={value}
 				onChange={(e) => onChange(e.target.value)}
 				onKeyDown={handleKeyDown}
-				placeholder="マークダウンを入力してください..."
-				className="markdown-textarea w-full h-full p-4 font-mono text-sm resize-none border-none outline-none bg-transparent focus:ring-0"
+				placeholder="# タイトルを入力
+
+本文をここに書いてください...
+
+## 見出し2
+
+- リスト項目
+- リスト項目
+
+**太字** *斜体* `コード`
+
+```javascript
+console.log('Hello World');
+```
+
+> 引用文
+
+画像をドラッグ&ドロップできます！"
+				className="w-full h-full p-4 font-mono text-sm resize-none border-none outline-none bg-transparent focus:ring-0 text-gray-900 dark:text-gray-100 leading-relaxed"
 				spellCheck={false}
 			/>
 			{isDragOver && (
-				<div className="absolute inset-0 flex items-center justify-center bg-blue-50/80 dark:bg-blue-900/40 border-2 border-dashed border-blue-400 pointer-events-none">
-					<div className="text-blue-600 dark:text-blue-300 text-lg font-medium">
-						画像をドロップしてください
+				<div className="absolute inset-0 flex items-center justify-center bg-blue-50/90 dark:bg-blue-900/80 border-2 border-dashed border-blue-400 pointer-events-none">
+					<div className="text-blue-600 dark:text-blue-300 text-lg font-medium bg-white dark:bg-gray-800 px-4 py-2 rounded-lg shadow-lg">
+						📷 画像をドロップしてください
 					</div>
 				</div>
 			)}

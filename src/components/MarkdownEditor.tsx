@@ -12,7 +12,7 @@ export function MarkdownEditor() {
 	};
 
 	return (
-		<div className="markdown-editor h-screen grid grid-cols-1 md:grid-cols-2">
+		<div className="markdown-editor h-full grid grid-cols-1 md:grid-cols-2">
 			{/* Input Panel - 左側 */}
 			<InputPanel value={markdownText} onChange={handleTextChange} />
 
