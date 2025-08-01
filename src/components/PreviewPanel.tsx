@@ -1,4 +1,5 @@
 import ReactMarkdown from "react-markdown";
+import remarkBreaks from "remark-breaks";
 import remarkGfm from "remark-gfm";
 
 interface PreviewPanelProps {
@@ -28,7 +29,7 @@ export function PreviewPanel({ markdownText }: PreviewPanelProps) {
 			<div className="max-w-none text-left p-6 min-h-full">
 				{markdownText ? (
 					<ReactMarkdown
-						remarkPlugins={[remarkGfm]}
+						remarkPlugins={[remarkGfm, remarkBreaks]}
 						components={{
 							h1: ({ children }) => (
 								<h1 className="text-3xl font-bold mb-4 text-gray-900 dark:text-white">
@@ -110,13 +111,16 @@ export function PreviewPanel({ markdownText }: PreviewPanelProps) {
 									);
 								}
 								return (
-									<code className="block bg-muted p-4 rounded-lg text-sm font-mono text-foreground overflow-x-auto">
+									<code className="text-sm font-mono text-foreground">
 										{children}
 									</code>
 								);
 							},
 							pre: ({ children }) => (
-								<pre className="bg-muted p-4 rounded-lg mb-4 overflow-x-auto">
+								<pre
+									className="bg-muted p-4 rounded-lg mb-4 overflow-x-auto"
+									style={{ whiteSpace: "pre" }}
+								>
 									{children}
 								</pre>
 							),
