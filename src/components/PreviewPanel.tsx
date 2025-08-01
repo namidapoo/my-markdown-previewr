@@ -139,7 +139,7 @@ export function PreviewPanel({ markdownText }: PreviewPanelProps) {
 						{markdownText}
 					</ReactMarkdown>
 				) : (
-					<div className="text-muted-foreground italic text-left">
+					<div className="text-muted-foreground italic text-left text-sm">
 						プレビューがここに表示されます
 					</div>
 				)}
